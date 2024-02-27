@@ -1,0 +1,57 @@
+board = list(range(1, 10))
+
+#Набор из выйгрышных вариантов
+wins = [(1, 2, 3), (4, 5, 6), (7, 8, 9), (1, 4, 7), (2, 5, 8), (3, 6, 9), (1, 5, 9), (3, 5, 7)]
+
+#Функция печатающая таблицу из цифры от 1 до 9
+def draw():
+    print('-------------')
+    for i in range(3):
+        print('|', board[0 + i * 3], '|', board[1 + i * 3], '|', board[2 + i * 3], '|')
+    print('-------------')
+
+#Функция дающая свободу ввода для пользователя
+def take_input(x):
+    while True:
+        value = input(f'куда поставить {x} ?')
+        if not (value in '123456789'):
+            print('Ошибочный ввод. Повторите.')
+            continue
+        value = int(value)
+        if str(board[value - 1]) in 'XO':
+            print('Эта клетка уже занята')
+            continue
+        board[value - 1] = x
+        break
+
+#Функция определяющая последовательность для выйгрыша
+def check_win():
+    for each in wins:
+        if (board[each[0] - 1]) == (board[each[1] - 1]) == (board[each[2] - 1]):
+            return board[each[1] - 1]
+        else:
+            return False
+
+#Функция main определяет победителя или выдаёт ничью в зависимости от выбранных вариантов
+def main():
+    counter = 0
+    while True:
+        draw()
+        if counter % 2 == 0:
+            take_input('X')
+        else:
+            take_input('O')
+        if counter > 3:
+            winner = check_win()
+            if winner:
+                draw()
+                print(winner, 'выйграл!')
+                break
+        counter += 1
+        if counter > 8:
+            draw()
+            print('Ничья')
+            break
+
+
+main()
